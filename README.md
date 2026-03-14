@@ -2,7 +2,7 @@
 本库为本人毕业论文的使用的所有代码，包括反演与成图。
 ## 略览
 本论文主要研究月球月壳与其反演问题，尝试利用Uieda等（2017）发展的在地球上广泛使用的基于球面棱柱体重力正演的莫霍面反演方法与Wieczorek等（1998）发展的球谐域的全球莫霍面反演的方法，利用LDEM高精度全月面地形数据与GEGM1200B高精度月球重力场模型展开对月壳厚度的反演，分别得到空间域反演与频率域反演的月壳厚度模型，对比与讨论二者的优劣性，并展开对月球相关地质问题的讨论，如月球不对称性、关键地质单元和月球演化历史，并对未来可能的探测任务提供一定的支持。
-本文数据处理与反演计算主要通过Python进行。球谐域计算布格重力异常使用Pyshtools（https://shtools.github.io/SHTOOLS/）（Wieczorek 等 2018）进行；空间域的地形引起的重力场的建模与正演计算使用开源库Fatiando a Terra（https://www.fatiando.org/）（Uieda 等 2013）；数据成图使用python库cartpy（https://cartopy.readthedocs.io/）（Elson P, Sales de Andrade E, Lucas G, et al. SciTools/cartopy: REL: v0. 24.1[J]. Zenodo, 2024.）与matplotlib（https://matplotlib.org/）（Hunter J D. Matplotlib: A 2D graphics environment[J]. Computing in science & engineering, 2007, 9(3): 90-95.）；数据读取输入和计算使用numpy（https://numpy.org/）（Harris 等 2020）、xarray（https://docs.xarray.dev/en/stable/）（Hoyer 等 2017）和pandas（https://pandas.pydata.org/）（McKinney 2010）；球谐域反演使用软件ctplanet（https://markwieczorek.github.io/ctplanet/index.html），空间域反演使用软件Fast non-linear gravity inversion in spherical coordinates with application to the South American Moho（https://github.com/pinga-lab/paper-moho-inversion-tesseroids）（Uieda 等 2017）我们修改了软件中的相关参数，使其能够在月球的环境下稳定运行。
+本文数据处理与反演计算主要通过Python进行。球谐域计算布格重力异常使用Pyshtools（https://shtools.github.io/SHTOOLS/）（Wieczorek 等 2018）进行；空间域的地形引起的重力场的建模与正演计算使用开源库Fatiando a Terra（https://www.fatiando.org/）（Uieda 等 2013）；数据成图使用python库cartpy（https://cartopy.readthedocs.io/）（Elson 等 2024.）与matplotlib（https://matplotlib.org/）（Hunter 2007）；数据读取输入和计算使用numpy（https://numpy.org/）（Harris 等 2020）、xarray（https://docs.xarray.dev/en/stable/）（Hoyer 等 2017）和pandas（https://pandas.pydata.org/）（McKinney 2010）；球谐域反演使用软件ctplanet（https://markwieczorek.github.io/ctplanet/index.html），空间域反演使用软件Fast non-linear gravity inversion in spherical coordinates with application to the South American Moho（https://github.com/pinga-lab/paper-moho-inversion-tesseroids）（Uieda 等 2017）我们修改了软件中的相关参数，使其能够在月球的环境下稳定运行。
 
 ### 参考文献
 
@@ -28,65 +28,86 @@ McKinney W. Data structures for statistical computing in Python[J]. scipy, 2010,
 
 **approaches:**
 
-​	内部包含所有运行的结果报告，但是只有最后一次是正确的，因为前期一直是使用的错误的布格重力异常（没有乘以孔隙度）
+    内部包含所有运行的结果报告，但是只有最后一次是正确的，因为前期一直是使用的错误的布格重力异常（没有乘以孔隙度）
 
 **data:**
 
-​	外层文件的数据存放处，计算布格重力异常的结果和月球密度数据与月球主要盆地的表格也在这里
+    外层文件的数据存放处，计算布格重力异常的结果和月球密度数据与月球主要盆地的表格也在这里
 
 **digitize:**
 
-​	一个在Mollweide投影的图中扣除线的坐标点的小程序。
+    一个在Mollweide投影的图中扣除线的坐标点的小程序。
 
-​	**data:** 存放了月球主要构造单元边界的数据
+    **data:** 存放了月球主要构造单元边界的数据
 
-​	`mollweide_digitize.py`: 主程序
-
-​	`plot_boundary.py`: 画图边界的函数程序
-
-​	`plot_ortho_front_back.py`: 画图的程序
-
-​	`test_plot.py`: 画图的测试程序
-
-​	`your_map.png`: 要数字化的图
+    `mollweide_digitize.py`: 主程序
+    `plot_boundary.py`: 画图边界的函数程序
+    `plot_ortho_front_back.py`: 画图的程序
+    `test_plot.py`: 画图的测试程序
+    `your_map.png`: 要数字化的图
 
 **plotting**:
 
-​	主要的画图程序位置
+    主要的画图程序位置
 
-​	**data**: 存放了月球主要构造单元边界的数据
+    **data**: 存放了月球主要构造单元边界的数据
 
-​	**figure**: 图件输出的主要位置
+    **figure**: 图件输出的主要位置
 
-​	**plot_area**: 画一个固定区域的图
+    **plot_area**: 画一个固定区域的图
 
-​		**fig**: 输出存放位置
+        **fig**: 输出存放位置
 
-​		`lonlat_labels.py`: cartpy在正射投影时候不能很好的画出经纬度的标记，这是一个补丁函数
+        `lonlat_labels.py`: cartpy在正射投影时候不能很好的画出经纬度的标记，这是一个补丁函数
+        `plot_basins.py`: 在cartpy的正射投影图中标划出主要盆地的位置的函数
+        `plot_boundary.py`: 画出主要地质构造单元边界的函数
+        `plot_certain_area.py`: 画出固定区域的函数们
+        `plot_certain_area_main.ipynb`: 该部分画图主文件
 
-​		`plot_basins.py`: 在cartpy的正射投影图中标划出主要盆地的位置的函数
-
-​		`plot_boundary.py`: 画出主要地质构造单元边界的函数
-
-​		`plot_certain_area.py`: 画出固定区域的函数们
-
-​		`plot_certain_area_main.ipynb`: 该部分画图主文件
-
-​	**tesseroid_test**: 补充文件图件的
+    **tesseroid_test**: 补充文件图件的
 
 ​		`lonlat_labels.py`: 同上
-
-​		`mohoinv.py`: 空间域反演使用软件Fast non-linear gravity inversion in spherical coordinates with application to the South American Moho（https://github.com/pinga-lab/paper-moho-inversion-tesseroids）（Uieda 等 2017）的主函数文件
+​		`mohoinv.py`: 空间域反演使用软件Fast non-linear gravity inversion in spherical coordinates with     application to the South American Moho（https://github.com/pinga-lab/paper-moho-inversion-tesseroids）（Uieda 等 2017）的主函数文件
 
 ​		`plot_basins.py`: 同上（在这里没有用上）
-
 ​		`tesseroid_py2.ipynb`: 老软件重力正演模拟程序
-
 ​		`tesseroid_py3.ipynb`: 新软件重力正演模拟程序
 
-​	`add_text_lonlat.py`: 在经纬度自动添加文字
+    `add_text_lonlat.py`: 在经纬度自动添加文字
+    `lonlat_labels.py`: 同上
+    `plot_Unit_boundary.ipynb`: 绘制月球构造单元的程序
+    `plot_basins.py`: 在图上添加盆地标志的函数
+    `plot_bouger.ipynb`: 绘制布格重力异常
+    `plot_boundary.py`: 在图上标记月球构造单元边界线的程序
+    `plot_frenquency_domain_result.ipynb`: 球谐域反演结果绘制
+    `plot_sperical_result.ipynb`: 空间域反演结果绘制
+    `tesseroid.ipynb`: 炫酷的球面棱柱体小单元建模的三维可示意图绘制程序
+    `spherical_prism_interactive.html`: 炫酷的球面棱柱体小单元建模的三维可示意图
 
-​	`lonlat_labels.py`: 同上
+**result**: 
+
+    反演结果存放的位置
+
+**scripts**: 
+    
+    重力数据处理和初步绘图
+
+    `bouguer_frenquency_domain.ipynb`: 球谐域计算的布格重力异常
+    `bouguer_tesseroid.ipynb`: 空间域tesseroid建模的布格重力异常
+    `cal_bouger_certain_area.ipynb`: 在特定区域切割布格重力异常
+    `cut_mare.ipynb`: 移除月海影响
+    `plot_result.py`: 空间域反演结果初步绘图主程序
+    `run_prod_plot.bat`: 空间域反演结果初步绘图的执行脚本，双击直接画图
+    `run_test_plot.bat`: 测试版的空间域反演结果初步绘图的执行脚本，双击直接画图
+
+**src**: 
+    
+    反演计算主要程序在这里面
+
+    `frequency_domain_main.ipynb`: 球谐域反演程序
+    `mohoinv.py`: 空间域反演使用软件Fast non-linear gravity inversion in spherical coordinates with application to the South American Moho（https://github.com/pinga-lab/paper-moho-inversion-tesseroids）（Uieda 等 2017）的主函数文件
+    `spectral_domain_1p.ipynb`: 设定所有参数的一次空间域反演程序
+    `spectral_domain_main.ipynb`: 空间域反演主程序
 
 
 

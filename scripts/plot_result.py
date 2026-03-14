@@ -86,7 +86,7 @@ def plot_map_cartopy(
 
     lon_plot, data_plot = _wrap_sort_lon(lon, data)
 
-    fig = plt.figure(figsize=(7.2, 3.8))
+    fig = plt.figure(figsize=(5, 2.5))
     ax = plt.axes(projection=ccrs.PlateCarree())
 
     # extent
@@ -176,17 +176,17 @@ def plot_results(test: bool = False):
 
     # ====================== 1. Score vs Density & Reference Level ======================
     print("1. Score vs Density & Reference Level")
-    fig, ax = plt.subplots(figsize=(7, 4.5))
+    fig, ax = plt.subplots(figsize=(5, 2.5))
     pcm = ax.pcolormesh(
         reference_levels, density, score_refden,
         shading="auto", cmap="viridis"
     )
-    ax.set_xlabel("参考界面高度 Reference level (km)")
-    ax.set_ylabel("密度差 Density contrast (kg m$^{-3}$)")
+    ax.set_xlabel("参考界面高度 (km)")
+    ax.set_ylabel("密度差 (kg m$^{-3}$)")
     ax.grid(True, which="both")
 
     cbar = fig.colorbar(pcm, ax=ax, pad=0.02)
-    cbar.set_label("评分 Score")
+    cbar.set_label("评分")
 
     # 找最小值并标注
     imin = np.unravel_index(np.nanargmin(score_refden), score_refden.shape)
@@ -210,7 +210,7 @@ def plot_results(test: bool = False):
         zorder=11
     )
 
-    ax.legend(loc="lower left", frameon=False)
+    ax.legend(loc="lower left", frameon=True)
     fig.tight_layout()
     fig.savefig(os.path.join(save_dir, "score_density_reference_minimum.png"),
                 dpi=300, bbox_inches="tight")
@@ -219,11 +219,11 @@ def plot_results(test: bool = False):
 
     # ====================== 2. Score vs Regularization Parameter ======================
     print("2. Score vs Regularization Parameter")
-    fig, ax = plt.subplots(figsize=(6.5, 4))
+    fig, ax = plt.subplots(figsize=(5, 2.5))
     ax.plot(regul, score_regul, "-o", color="k")
     ax.set_xscale("log")
-    ax.set_xlabel("正则化参数 Regularization parameter")
-    ax.set_ylabel("评分 Score")
+    ax.set_xlabel("正则化参数")
+    ax.set_ylabel("评分")
     ax.grid(True, which="both")
 
     i_min = np.nanargmin(score_regul)
@@ -252,7 +252,7 @@ def plot_results(test: bool = False):
 
     # ====================== 3. Regularization Residual Histogram ======================
     print("3. Regularization Residual Histogram")
-    fig, ax = plt.subplots(figsize=(6.5, 4))
+    fig, ax = plt.subplots(figsize=(4, 5))
     n_bins = 30
     ax.hist(regul_residual, bins=n_bins, color="0.6", edgecolor="k", alpha=0.85)
 
@@ -262,10 +262,10 @@ def plot_results(test: bool = False):
     ax.axvline(mean_val - std_val, color="k", linestyle=":", lw=1.0, label="-1σ")
     ax.axvline(mean_val + std_val, color="k", linestyle=":", lw=1.0, label="+1σ")
 
-    ax.set_xlabel("残差 Residual")
-    ax.set_ylabel("计数 Count")
+    ax.set_xlabel("残差")
+    ax.set_ylabel("计数")
     ax.grid(True, axis="y")
-    ax.legend(frameon=False)
+    ax.legend(loc="upper left",frameon=False)
     fig.tight_layout()
     fig.savefig(os.path.join(save_dir, "regul_residual_histogram.png"),
                 dpi=300, bbox_inches="tight")
@@ -274,19 +274,19 @@ def plot_results(test: bool = False):
 
     # ====================== 4. Refden Residual Histogram ======================
     print("4. Refden Residual Histogram")
-    fig, ax = plt.subplots(figsize=(6.5, 4))
+    fig, ax = plt.subplots(figsize=(4, 5))
     ax.hist(refden_residual, bins=n_bins, color="0.6", edgecolor="k", alpha=0.85)
 
     mean_val = np.mean(refden_residual)
     std_val = np.std(refden_residual)
-    ax.axvline(mean_val, color="r", linestyle="--", lw=1.2, label=f"均值 Mean = {mean_val:.2e}")
-    ax.axvline(mean_val - std_val, color="k", linestyle=":", lw=1.0, label="-1σ")
-    ax.axvline(mean_val + std_val, color="k", linestyle=":", lw=1.0, label="+1σ")
+    ax.axvline(mean_val, color="r", linestyle="--", lw=1.2, label=f"均值 Mean={mean_val:.2e}")
+    ax.axvline(mean_val - std_val, color="k", linestyle=":", lw=1.0, label=f"-1σ={-std_val:.2e}")
+    ax.axvline(mean_val + std_val, color="k", linestyle=":", lw=1.0, label=f"-1σ={std_val:.2e}")
 
-    ax.set_xlabel("残差 Residual")
-    ax.set_ylabel("计数 Count")
+    ax.set_xlabel("残差")
+    ax.set_ylabel("计数")
     ax.grid(True, axis="y")
-    ax.legend(frameon=False)
+    ax.legend(loc="upper left",frameon=False)
     fig.tight_layout()
     fig.savefig(os.path.join(save_dir, "refden_residual_histogram.png"),
                 dpi=300, bbox_inches="tight")
